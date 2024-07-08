@@ -1,0 +1,118 @@
+Invoice Form
+This project is a web-based invoice form that allows users to enter invoice details, validate inputs on both client and server sides, upload files, and perform CRUD operations on invoices.
+
+Project Structure
+bash
+Copy code
+/project-root
+  /public
+    /css
+      style.css
+    /js
+      script.js
+    index.html
+  /uploads
+  /routes
+    invoice.js
+  server.js
+  package.json
+Features
+Quantity (Qty): Accepts only numeric characters.
+Amount: Accepts only numeric characters.
+Total Amount: Automatically calculated as Qty * Amount.
+Tax Percentage: Dropdown with options 0%, 5%, 12%, 18%, and 28%.
+Tax Amount: Calculated based on the total amount and selected tax percentage.
+Net Amount: Calculated as Total Amount + Tax Amount.
+Customer Name: Accepts only alphabetic characters.
+Invoice Date: Date picker input.
+File Upload: Accepts JPG, PNG, and PDF files with a maximum size of 3MB.
+Customer Email: Validates email format.
+CRUD Operations: Save, edit, and delete invoices.
+Getting Started
+Prerequisites
+Node.js installed on your machine.
+Installation
+Clone the repository:
+
+sh
+Copy code
+git clone <repository-url>
+cd project-root
+Install dependencies:
+
+sh
+Copy code
+npm install
+Create necessary directories:
+
+sh
+Copy code
+mkdir uploads
+Running the Server
+Start the server:
+
+sh
+Copy code
+node server.js
+Open your browser and navigate to:
+
+arduino
+Copy code
+http://localhost:3001
+Project Details
+server.js
+This file sets up the Express server, serves static files, and defines routes for invoice-related operations.
+
+javascript
+Copy code
+const express = require('express');
+const bodyParser = require('body-parser');
+const path = require('path');
+const fs = require('fs');
+const invoiceRoutes = require('./routes/invoice');
+
+const app = express();
+const port = 3001; // Change port if needed
+
+const uploadDir = path.join(__dirname, 'uploads');
+if (!fs.existsSync(uploadDir)) {
+    fs.mkdirSync(uploadDir);
+}
+
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+
+app.use(express.static(path.join(__dirname, 'public')));
+app.use('/uploads', express.static(uploadDir));
+
+app.use('/invoice', invoiceRoutes);
+
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+
+app.listen(port, () => {
+    console.log(`Server running at http://localhost:${port}`);
+});
+public/index.html
+This file contains the HTML structure for the invoice form and invoice list table.
+
+public/js/script.js
+This file contains the JavaScript for client-side validation and form handling.
+
+routes/invoice.js
+This file contains the Express routes for handling invoice operations (save, edit, delete).
+
+public/css/style.css
+This file contains the styles for the invoice form and table.
+
+Contributing
+Fork the project.
+Create your feature branch: git checkout -b feature/YourFeature.
+Commit your changes: git commit -m 'Add some feature'.
+Push to the branch: git push origin feature/YourFeature.
+Open a pull request.
+License
+This project is licensed under the MIT License.
+
+//This README.md file provides an overview of the project, installation instructions, a brief explanation of each file, and contribution guidelines. It should help users understand and get started with the project quickly.
